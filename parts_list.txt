@@ -1,0 +1,6 @@
+parts list
+
+buttons x 64 = 10$
+raspberry pi = owned
+breadboard = 6$
+chessboard
