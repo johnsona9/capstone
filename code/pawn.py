@@ -1,3 +1,5 @@
+from board import board
+
 class pawn(object):
     
     rank = 0

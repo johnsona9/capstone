@@ -1,4 +1,4 @@
-import board
+from board import board
 class king:
     rank = 0
     file = 0
