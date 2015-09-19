@@ -57,7 +57,6 @@ class bishop(object):
         x = 1
         position = (self.file - x, self.rank - x)
         while position[0] > 0 and position[0] < 9 and position[1] > 0 and position[1] < 9:
-            print self.board.isFull(position)
             if self.board.isFull(position):
                 attacking.append(position)
                 break #from while
