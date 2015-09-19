@@ -1,18 +1,6 @@
 from board import board
-class king:
-    rank = 0
-    file = 0
-    color = None
-    board = None
-    
-    def __init__(self, position, color, board):
-        self.file = position[0]
-        self.rank = position[1]
-        self.color = color
-        
-    def move(self, newPosition):
-        self.file = newPosition[0]
-        self.rank = newPosition[1]
+from piece import piece
+class king(piece):
         
     # def isCaptured(self):
         #remove from pieces on the board

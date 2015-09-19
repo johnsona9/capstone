@@ -1,16 +1,6 @@
 from board import board
-class queen(object):
-    
-    file = 0
-    rank = 0
-    color = None
-    board = None
-    
-    def __init__(self, position, color, board):
-        self.file = position[0]
-        self.rank = position[1]
-        self.color = color
-        self.board = board
+from piece import piece
+class queen(piece):
     
     def attackedSquares(self):
         attacking = []
