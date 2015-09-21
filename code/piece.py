@@ -15,3 +15,6 @@ class piece(object):
         
     def getPosition(self):
         return (self.file, self.rank)
+        
+    def attackedSquares(self):
+        return 0
