@@ -2,6 +2,12 @@ from board import board
 from piece import piece
 class bishop(piece):
     
+    def tag(self):
+        if self.color == "white":
+            return "wB"
+        elif self.color == "black":
+            return "bB"
+    
     def attackedSquares(self):
         attacking = []
         finalAttacking = []

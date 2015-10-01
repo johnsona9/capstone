@@ -2,6 +2,12 @@ from board import board
 from piece import piece
 class queen(piece):
     
+    def tag(self):
+        if self.color == "white":
+            return "wQ"
+        elif self.color == "black":
+            return "bQ"
+    
     def attackedSquares(self):
         attacking = []
         finalAttacking = []

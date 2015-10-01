@@ -1,6 +1,12 @@
 from piece import piece
 class knight(piece):
     
+    def tag(self):
+        if self.color == "white":
+            return "wN"
+        elif self.color == "black":
+            return "bN"
+    
     def attackedSquares(self):
         attacking = []
         finalAttacking = []

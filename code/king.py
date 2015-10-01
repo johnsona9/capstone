@@ -2,8 +2,11 @@ from board import board
 from piece import piece
 class king(piece):
         
-    # def isCaptured(self):
-        #remove from pieces on the board
+    def tag(self):
+        if self.color == "white":
+            return "wK"
+        elif self.color == "black":
+            return "bK"
         
     def attackedSquares(self):
         

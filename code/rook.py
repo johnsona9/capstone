@@ -2,6 +2,12 @@ from board import board
 from piece import piece
 class rook(piece):
     
+    def tag(self):
+        if self.color == "white":
+            return "wR"
+        elif self.color == "black":
+            return "bR"
+    
     def attackedSquares(self):
         attacking = []
         finalAttacking = []

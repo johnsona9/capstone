@@ -19,3 +19,8 @@ class piece(object):
         
     def attackedSquares(self):
         return 0
+        
+    def movePiece(self, newPosition):
+        self.board.movePiece(self, newPosition)
+        self.rank = newPosition[0]
+        self.file = newPosition[1]

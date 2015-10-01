@@ -10,5 +10,6 @@ from game import game
 
 board = board()
 game = game(board)
-
-print board.getAttacked()
+print board.printBoard()
+board.getPiece([2,2]).movePiece([3,2])
+print board.printBoard()

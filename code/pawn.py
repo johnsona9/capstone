@@ -2,6 +2,12 @@ from board import board
 from piece import piece
 class pawn(piece):
     
+    def tag(self):
+        if self.color == "white":
+            return "wP"
+        elif self.color == "black":
+            return "bP"
+    
     def attackedSquares(self):
         
         attacking = []
