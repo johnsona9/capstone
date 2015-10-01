@@ -14,7 +14,7 @@ class board(object):
         print self.squares
     
     def placePiece(self, position, piece):
-        self.squares[position[0] - 1][position[1] - 1] = piece
+        self.squares[position[0] - 1][position[1] - 1] = piece #subtractions are for adjustments between array 0's and 1's
         self.pieces.append(piece)
 
     def getAttacked(self):
@@ -37,3 +37,6 @@ class board(object):
     def isFull(self, position):
         return not self.squares[position[0] - 1][position[1] - 1] == None
         #if the given position has a piece return true
+        
+    
+        

@@ -8,7 +8,7 @@ class rook(piece):
         
         #right side
         x = 1
-        position = (self.file + x, self.rank)
+        position = (self.rank, self.file + x)
         while position[0] > 0 and position[0] < 9 and position[1] > 0 and position[1] < 9:
             if self.board.isFull(position):
                 attacking.append(position)
@@ -20,7 +20,7 @@ class rook(piece):
             
         #left side
         x = 1
-        position = (self.file - x, self.rank)
+        position = (self.rank, self.file - x)
         while position[0] > 0 and position[0] < 9 and position[1] > 0 and position[1] < 9:
             if self.board.isFull(position):
                 attacking.append(position)
@@ -32,7 +32,7 @@ class rook(piece):
             
         #up 
         x = 1
-        position = (self.file, self.rank + x)
+        position = (self.rank + x, self.file)
         while position[0] > 0 and position[0] < 9 and position[1] > 0 and position[1] < 9:
             if self.board.isFull(position):
                 attacking.append(position)
@@ -44,7 +44,7 @@ class rook(piece):
             
         #down 
         x = 1
-        position = (self.file, self.rank - x)
+        position = (self.rank - x, self.file)
         while position[0] > 0 and position[0] < 9 and position[1] > 0 and position[1] < 9:
             if self.board.isFull(position):
                 attacking.append(position)

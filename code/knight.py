@@ -4,14 +4,14 @@ class knight(piece):
     def attackedSquares(self):
         attacking = []
         finalAttacking = []
-        attacking.append((self.file - 2, self.rank + 1))
-        attacking.append((self.file - 2, self.rank - 1))
-        attacking.append((self.file + 2, self.rank + 1))
-        attacking.append((self.file + 2, self.rank - 1))
-        attacking.append((self.file - 1, self.rank + 2))
-        attacking.append((self.file - 1, self.rank - 2))
-        attacking.append((self.file + 1, self.rank + 2))
-        attacking.append((self.file + 1, self.rank - 2))
+        attacking.append((self.rank + 1, self.file - 2))
+        attacking.append((self.rank - 1, self.file - 2))
+        attacking.append((self.rank + 1, self.file + 2))
+        attacking.append((self.rank - 1, self.file + 2))
+        attacking.append((self.rank + 2, self.file - 1))
+        attacking.append((self.rank - 2, self.file - 1))
+        attacking.append((self.rank + 2, self.file + 1))
+        attacking.append((self.rank - 2, self.file + 1))
         
         for square in attacking:
             if (square[0] > 0 and square[0] < 9 and square[1] > 0 and square[1] < 9):

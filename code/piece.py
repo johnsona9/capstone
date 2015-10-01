@@ -6,15 +6,16 @@ class piece(object):
     board = None
     
     def __init__(self, position, color, board):
-        self.file = position[0]
-        self.rank = position[1]
+        self.rank = position[0]
+        self.file = position[1]
         self.color = color
+        self.board = board
         
     def getColor(self):
         return self.color
         
     def getPosition(self):
-        return (self.file, self.rank)
+        return (self.rank, self.file)
         
     def attackedSquares(self):
         return 0
