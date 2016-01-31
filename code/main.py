@@ -7,6 +7,7 @@ from queen import queen
 from king import king
 from board import board
 from game import game
+import lighter
 
 squareDictionary = {'a1': [1,1], 'a2': [2,1], 'a3': [3,1], 'a4': [4,1], 'a5': [5,1], 'a6': [6,1], 'a7': [7,1], 'a8': [8,1], 
                     'b1': [1,2], 'b2': [2,2], 'b3': [3,2], 'b4': [4,2], 'b5': [5,2], 'b6': [6,2], 'b7': [7,2], 'b8': [8,2],
@@ -27,14 +28,14 @@ def requestFirst(prompt):
         print "There is no piece on that square, please pick another square."
         return request(prompt)
 
-# board.getPiece([8,5]).movePiece([5,5])
-# for e in reversed(board.getAttacked()):
-#     print e
 for e in reversed(board.printBoard()):
     print e
-
-fromSquare = squareDictionary[requestFirst("Piece moving from square: ")]
-toSquare = squareDictionary[raw_input("Piece moves to square: ")]
-board.getPiece(fromSquare).movePiece(toSquare)
-for e in reversed(board.printBoard()):
-    print e
+while 1:
+    fromSquare = squareDictionary[requestFirst("Piece moving from square: ")]
+    toSquare = squareDictionary[raw_input("Piece moves to square: ")]
+    board.getPiece(fromSquare).movePiece(toSquare)
+    lighter(board.getAttacked())
+    for e in reversed(board.printBoard()):
+        print e
+    for e in reversed(board.getAttacked()):
+        print e
