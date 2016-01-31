@@ -54,5 +54,6 @@ class game(object):
         for piece in pieces:
             board.placePiece(piece.getPosition(), piece)
         
+        
     
         
