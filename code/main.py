@@ -38,11 +38,24 @@ def lighter(schematic):
 
 def requestFirst(prompt):
     value = raw_input(prompt)
-    if isinstance(board.getPiece(squareDictionary[value]), piece):
-        return value
+    returnedPiece = board.getPiece(squareDictionary[value])
+    if isinstance(returnedPiece, piece):
+        return value #need to return the actual piece
     else:
         print "There is no piece on that square, please pick another square."
-        return request(prompt)
+        return requestFirst(prompt)
+
+# def requestSecond(prompt, initialPiece):
+#     value = raw_input(prompt)
+#     returnedPiece = board.getPiece(squareDictionary[value])
+#     if isinstance(returnedPiece, piece):
+#         if initialPiece.getColor() == returnedPiece.getColor():
+#             print "You are trying to capture your own piece, please choose another square."
+#             return requestSecond(prompt, initialPiece)
+#         else:
+#             #here we need to capture the second piece
+#     else:
+#         #here we need to return the square
 
 for e in reversed(board.printBoard()):
     print e
@@ -53,6 +66,4 @@ while 1:
     board.getPiece(fromSquare).movePiece(toSquare)
     lighter(board.getAttacked())
     for e in reversed(board.printBoard()):
-        print e
-    for e in reversed(board.getAttacked()):
         print e
