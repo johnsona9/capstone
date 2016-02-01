@@ -23,15 +23,15 @@ bus = smbus.SMBus(1)
 address = 0x04
 
 def lighter(schematic):
-    for rank in len(schematic):
-        for file in len(schematic[rank]):
+    for rank in range(0, len(schematic)):
+        for file in range(0, len(schematic[rank])):
             value = schematic[rank][file]
             pos = rank * 8 + file
-            if value > 0:
+            if value < 0:
                 bus.write_byte_data(address, 0, 64 + pos)
             elif value == 0:
                 bus.write_byte_data(address, 0, pos)
-            elif value < 0:
+            elif value > 0:
                 bus.write_byte_data(address, 0, 128 + pos)
             #need another else case for when squares are attacked equally
 
@@ -46,6 +46,7 @@ def requestFirst(prompt):
 
 for e in reversed(board.printBoard()):
     print e
+lighter(board.getAttacked())
 while 1:
     fromSquare = squareDictionary[requestFirst("Piece moving from square: ")]
     toSquare = squareDictionary[raw_input("Piece moves to square: ")]

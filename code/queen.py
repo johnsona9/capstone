@@ -70,7 +70,7 @@ class queen(piece):
             else:
                 attacking.append(position)
             x += 1
-            position = (self.rank + xself.file + x)
+            position = (self.rank + x, self.file + x)
         
         #right down diagonal
         x = 1
