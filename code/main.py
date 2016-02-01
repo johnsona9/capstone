@@ -7,7 +7,7 @@ from queen import queen
 from king import king
 from board import board
 from game import game
-import lighter
+import smbus
 
 squareDictionary = {'a1': [1,1], 'a2': [2,1], 'a3': [3,1], 'a4': [4,1], 'a5': [5,1], 'a6': [6,1], 'a7': [7,1], 'a8': [8,1], 
                     'b1': [1,2], 'b2': [2,2], 'b3': [3,2], 'b4': [4,2], 'b5': [5,2], 'b6': [6,2], 'b7': [7,2], 'b8': [8,2],
@@ -19,6 +19,22 @@ squareDictionary = {'a1': [1,1], 'a2': [2,1], 'a3': [3,1], 'a4': [4,1], 'a5': [5
                     'h1': [1,8], 'h2': [2,8], 'h3': [3,8], 'h4': [4,8], 'h5': [5,8], 'h6': [6,8], 'h7': [7,8], 'h8': [8,8]}
 board = board()
 game = game(board)
+bus = smbus.SMBus(1)
+address = 0x04
+
+def lighter(schematic):
+    for rank in len(schematic):
+        for file in len(schematic[rank]):
+            value = schematic[rank][file]
+            pos = rank * 8 + file
+            if value > 0:
+                bus.write_byte_data(address, 0, 64 + pos)
+            elif value == 0:
+                bus.write_byte_data(address, 0, pos)
+            elif value < 0:
+                bus.write_byte_data(address, 0, 128 + pos)
+            #need another else case for when squares are attacked equally
+
 
 def requestFirst(prompt):
     value = raw_input(prompt)
