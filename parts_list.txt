@@ -1,9 +1,0 @@
-parts list
-
-rainbowduino
-Atlas-SoC
-64 common anode RGB LEDs
-64 phototransistors
-64 470 KOhm resistors
-chessboard
-lots of wire
