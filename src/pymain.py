@@ -1,9 +1,9 @@
 import chess
-#import smbus
+import smbus
 
 board = chess.Board()
-# bus = smbus.SMBus(1)
-# address = 0x04
+bus = smbus.SMBus(1)
+address = 0x04
 
 def lighter():
     # for every square we need to get the 
@@ -14,18 +14,18 @@ def lighter():
             isAttacked = True
         blackAttacks = len(board.attackers(chess.BLACK, chess.SQUARES[x]))
         value = whiteAttacks - blackAttacks
-        #
-        # rank = x / 8
-        # file = x % 8
-        # pos = rank * 8 + file
-        # if value < 0:
-#             # bus.write_byte_data(address, 0, 64 + pos)
-#         elif value == 0 and isAttacked:
-#             # bus.write_byte_data(address, 0, 192 + pos)
-#         elif value > 0:
-#             #bus.write_byte_data(address, 0, 128 + pos)
-#         else:
-            #bus.write_byte_data(address, 0, pos)
+        
+        rank = x / 8
+        file = x % 8
+        pos = rank * 8 + file
+        if value < 0:
+       		bus.write_byte_data(address, 0, 64 + pos)
+        elif value == 0 and isAttacked:
+        	bus.write_byte_data(address, 0, 192 + pos)
+        elif value > 0:
+        	bus.write_byte_data(address, 0, 128 + pos)
+        else:
+        	bus.write_byte_data(address, 0, pos)
 
 def main():
     while 1:
