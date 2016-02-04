@@ -6,7 +6,6 @@ bus = smbus.SMBus(1)
 address = 0x04
 
 def lighter():
-    # for every square we need to get the 
     for x in chess.SQUARES:
         isAttacked = False
         whiteAttacks = len(board.attackers(chess.WHITE, chess.SQUARES[x]))
@@ -43,6 +42,3 @@ def main():
         
         
 main()
-        
-    
-    
