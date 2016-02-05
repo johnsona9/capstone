@@ -1,5 +1,6 @@
 import chess
 import smbus
+import time
 
 board = chess.Board()
 bus = smbus.SMBus(1)
@@ -19,12 +20,20 @@ def lighter():
         pos = rank * 8 + file
         if value < 0:
        		bus.write_byte_data(address, 0, 64 + pos)
+		time.sleep(0.0005)
+       		bus.write_byte_data(address, 0, 0)
         elif value == 0 and isAttacked:
         	bus.write_byte_data(address, 0, 192 + pos)
+		time.sleep(0.0005)
+       		bus.write_byte_data(address, 0, 1)
         elif value > 0:
         	bus.write_byte_data(address, 0, 128 + pos)
+		time.sleep(0.0005)
+       		bus.write_byte_data(address, 0, 0)
         else:
         	bus.write_byte_data(address, 0, pos)
+		time.sleep(0.0005)
+       		bus.write_byte_data(address, 0, 0)
 
 def main():
     while 1:
