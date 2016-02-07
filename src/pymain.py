@@ -19,21 +19,13 @@ def lighter():
         file = x % 8
         pos = rank * 8 + file
         if value < 0:
-       		bus.write_byte_data(address, 0, 64 + pos)
-		time.sleep(0.0005)
-       		bus.write_byte_data(address, 0, 0)
+       		bus.write_block_data(address, 0, [0, 64 + pos])
         elif value == 0 and isAttacked:
-        	bus.write_byte_data(address, 0, 192 + pos)
-		time.sleep(0.0005)
-       		bus.write_byte_data(address, 0, 1)
+        	bus.write_block_data(address, 0, [0, 192 + pos])
         elif value > 0:
-        	bus.write_byte_data(address, 0, 128 + pos)
-		time.sleep(0.0005)
-       		bus.write_byte_data(address, 0, 0)
+        	bus.write_block_data(address, 0, [0, 128 + pos])
         else:
-        	bus.write_byte_data(address, 0, pos)
-		time.sleep(0.0005)
-       		bus.write_byte_data(address, 0, 0)
+        	bus.write_block_data(address, 0, [0, pos])
 
 def main():
     while 1:

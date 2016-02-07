@@ -37,13 +37,14 @@ void loop()
   }
 }
 
-void receiveEvent(int howMany) {
+void receiveEvent(int byteCount) {
   byte val = 0x00;
   int pos = 0;
   counter ++;
   while (Wire.available() > 0)
   {
     val = Wire.read();
+    Serial.println(val);
   }
   if (oneReceived == 0 && twoReceived == 0) {
     val1 = val;
@@ -57,7 +58,6 @@ void receiveEvent(int howMany) {
     oneReceived = 0;
     twoReceived = 0;
     if (val1 == 0) {
-      Serial.println("0");
       uint32_t LEDcolor = 0x000000;
       if (val2 < 64) {
         pos = val2;
