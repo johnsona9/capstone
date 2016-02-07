@@ -37,14 +37,13 @@ void loop()
   }
 }
 
-void receiveEvent(int byteCount) {
+void receiveEvent(int howMany) {
   byte val = 0x00;
   int pos = 0;
   counter ++;
   while (Wire.available() > 0)
   {
     val = Wire.read();
-    Serial.println(val);
   }
   if (oneReceived == 0 && twoReceived == 0) {
     val1 = val;
