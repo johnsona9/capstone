@@ -1,3 +1,5 @@
+<<<<<<< Local Changes
+<<<<<<< Local Changes
 import chess
 import smbus
 import time
@@ -41,9 +43,10 @@ def lighter():
 		p2 = Popen("less", stdin = p1.stdout)
 
 def main():
+    lighter()
     while 1:
-        lighter()
-	f = open('timing.csv', 'a')
+        runStockfish()
+	    f = open('timing.csv', 'a')
         fromSquare = raw_input("Piece moving from square: ")
         toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
@@ -60,4 +63,24 @@ def main():
         f.close
         print board
         
+        
+def runStockfish():
+    engine.setposition(moves)
+    p = Process(target=bestMove)
+    p.start()
+    p.join()
+        
+def bestMove():
+    move = engine.bestmove()["move"]
+    fromSquare = move[:2]
+    toSquare = move[2:]
+    bus.write_byte_data(address, 0, 1)
+    time.sleep(delay)
+    bus.write_byte_data(address, 0, chess.SQUARE_NAMES.index(fromSquare))
+    time.sleep(delay)
+    bus.write_byte_data(address, 0, 2)
+    time.sleep(delay)
+    bus.write_byte_data(address, 0, chess.SQUARE_NAMES.index(toSquare))
+
+
 main()
