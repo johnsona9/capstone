@@ -1,5 +1,3 @@
-<<<<<<< Local Changes
-<<<<<<< Local Changes
 import chess
 import smbus
 import time
@@ -27,6 +25,9 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
+	bus.write_byte(address, 3)
+	time.sleep(delay)
+	bus.write_byte(address, 0)
         if value < 0:
             data = [0, 64 + pos]
         elif value == 0 and isAttacked:
@@ -37,6 +38,7 @@ def lighter():
         	data = [0, pos]
         try:
 		for i in data:
+			time.sleep(delay)
 			bus.write_byte(address, i)
         except IOError:
 		p1 = Popen("i2cdetect -y 1", stdout = PIPE)
@@ -46,7 +48,7 @@ def main():
     lighter()
     while 1:
         runStockfish()
-	    f = open('timing.csv', 'a')
+	f = open('timing.csv', 'a')
         fromSquare = raw_input("Piece moving from square: ")
         toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
