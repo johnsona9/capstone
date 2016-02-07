@@ -1,6 +1,7 @@
 import chess
 import smbus
 import time
+import subprocess
 
 board = chess.Board()
 bus = smbus.SMBus(1)
@@ -19,13 +20,17 @@ def lighter():
         file = x % 8
         pos = rank * 8 + file
         if value < 0:
-       		bus.write_block_data(address, 0, [0, 64 + pos])
+            data = [0, 64 + pos]
         elif value == 0 and isAttacked:
-        	bus.write_block_data(address, 0, [0, 192 + pos])
+        	data = [0, 192 + pos]
         elif value > 0:
-        	bus.write_block_data(address, 0, [0, 128 + pos])
+        	data = [0, 128 + pos]
         else:
-        	bus.write_block_data(address, 0, [0, pos])
+        	data = [0, pos]
+        try:
+            bus.write_block_data(address, 0, data)
+        except IOError:
+            subprocess.call(['i2cdetect', '-y', '1'])
 
 def main():
     while 1:
