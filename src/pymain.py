@@ -1,11 +1,12 @@
 import chess
-import smbus
+# import smbus
 import time
 from pystockfish import *
 from multiprocessing import Process
+from datetime import datetime
 
 board = chess.Board()
-bus = smbus.SMBus(1)
+# bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
@@ -46,11 +47,7 @@ def lighter():
 
 def main():
     while 1:
-        lighter()
-        engine.setposition(moves)
-        p = Process(target=bestMove)
-        p.start()
-        p.join()
+        f = open('timing.csv', 'a')
         fromSquare = raw_input("Piece moving from square: ")
         toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
@@ -59,8 +56,12 @@ def main():
             fromSquare = raw_input("Piece moving from square: ")
             toSquare = raw_input("Piece moving to square: ")
             move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+        startTime = datetime.now()
         board.push(move)
+        lighter()
         moves.append(move.uci())
+        f.write(str(datetime.now() - startTime) + ", ")
+        f.close
         print board
         
         
