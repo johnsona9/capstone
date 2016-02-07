@@ -23,10 +23,10 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
-	bus.write_byte_data(address, 0, 3)
-	time.sleep(delay)
-	bus.write_byte_data(address, 0, 0)
-	time.sleep(delay)
+        bus.write_byte_data(address, 0, 3)
+        time.sleep(delay)
+        bus.write_byte_data(address, 0, 0)
+        time.sleep(delay)
         if value < 0:
             bus.write_byte_data(address, 0, 0)
             time.sleep(delay)
@@ -51,7 +51,7 @@ def main():
         p = Process(target=bestMove)
         p.start()
         p.join()
-	fromSquare = raw_input("Piece moving from square: ")
+        fromSquare = raw_input("Piece moving from square: ")
         toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
         while move not in board.legal_moves:
