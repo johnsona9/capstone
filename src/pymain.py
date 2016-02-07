@@ -4,6 +4,7 @@ import time
 from pystockfish import *
 from multiprocessing import Process
 from datetime import datetime
+from subprocess import Popen, PIPE
 
 board = chess.Board()
 bus = smbus.SMBus(1)
@@ -25,17 +26,19 @@ def lighter():
         file = x % 8
         pos = rank * 8 + file
         if value < 0:
-       		time.sleep(delay)
-		bus.write_block_data(address, 0, [0, 64 + pos])
+            data = [0, 64 + pos]
         elif value == 0 and isAttacked:
-        	time.sleep(delay)
-		bus.write_block_data(address, 0, [0, 192 + pos])
+        	data = [0, 192 + pos]
         elif value > 0:
-		time.sleep(delay)        	
-		bus.write_block_data(address, 0, [0, 128 + pos])
+        	data = [0, 128 + pos]
         else:
-        	time.sleep(delay)
-		bus.write_block_data(address, 0, [0, pos])
+        	data = [0, pos]
+        try:
+		for i in data:
+			bus.write_byte(address, i)
+        except IOError:
+		p1 = Popen("i2cdetect -y 1", stdout = PIPE)
+		p2 = Popen("less", stdin = p1.stdout)
 
 def main():
     while 1:
