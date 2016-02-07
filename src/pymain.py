@@ -67,7 +67,7 @@ def bestMove():
     time.sleep(0.0005)
     bus.write_byte_data(address, 0, chess.SQUARE_NAMES.index(fromSquare))
     time.sleep(0.0005)
-    bus.write_byte_data(address, 0, 1)
+    bus.write_byte_data(address, 0, 2)
     time.sleep(0.0005)
     bus.write_byte_data(address, 0, chess.SQUARE_NAMES.index(toSquare))
 
