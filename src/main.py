@@ -1,5 +1,3 @@
-<<<<<<< Local Changes
-<<<<<<< Local Changes
 import chess
 import smbus
 import time
@@ -7,6 +5,7 @@ from pystockfish import *
 from multiprocessing import Process
 from datetime import datetime
 from subprocess import Popen, PIPE
+import sys
 
 board = chess.Board()
 bus = smbus.SMBus(1)
@@ -15,6 +14,9 @@ delay = 0.0005
 
 moves = []
 engine = Engine(depth=10)
+stockfish = False
+if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
+	stockfish = True
 
 def lighter():
     for x in chess.SQUARES:
@@ -27,6 +29,10 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
+	if (stockfish):
+		bus.write_byte(address, 3)
+		time.sleep(delay)
+		bus.write_byte(address, 0)
         if value < 0:
             data = [0, 64 + pos]
         elif value == 0 and isAttacked:
@@ -37,6 +43,7 @@ def lighter():
         	data = [0, pos]
         try:
 		for i in data:
+			time.sleep(delay)
 			bus.write_byte(address, i)
         except IOError:
 		p1 = Popen("i2cdetect -y 1", stdout = PIPE)
@@ -45,8 +52,9 @@ def lighter():
 def main():
     lighter()
     while 1:
-        runStockfish()
-	    f = open('timing.csv', 'a')
+        if (stockfish):
+		runStockfish()
+	f = open('timing.csv', 'a')
         fromSquare = raw_input("Piece moving from square: ")
         toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
