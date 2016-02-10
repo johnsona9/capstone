@@ -47,8 +47,7 @@ def lighter():
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-		    p1 = Popen("i2cdetect -y 1", stdout = PIPE, shell = True)
-		    p2 = Popen("less", stdin = p1.stdout, shell = True)
+		    Popen("i2cdetect -y 1>/dev/null", shell=True)
 
 
 def main():
