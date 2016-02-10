@@ -16,7 +16,8 @@ moves = []
 engine = Engine(depth=10)
 stockfish = False
 if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
-	stockfish = True
+    stockfish = True
+
 
 def lighter():
     for x in chess.SQUARES:
@@ -29,40 +30,34 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
-	if (stockfish):
-		bus.write_byte(address, 3)
-		time.sleep(delay)
-		bus.write_byte(address, 0)
+        if (stockfish):
+            bus.write_byte(address, 3)
+            time.sleep(delay)
+            bus.write_byte(address, 0)
         if value < 0:
             data = [0, 64 + pos]
         elif value == 0 and isAttacked:
-        	data = [0, 192 + pos]
+            data = [0, 192 + pos]
         elif value > 0:
-        	data = [0, 128 + pos]
+            data = [0, 128 + pos]
         else:
-        	data = [0, pos]
+            data = [0, pos]
         try:
-		for i in data:
-			time.sleep(delay)
-			bus.write_byte(address, i)
+            for i in data:
+                time.sleep(delay)
+                bus.write_byte(address, i)
         except IOError:
-		p1 = Popen("i2cdetect -y 1", stdout = PIPE, shell = True)
-		p2 = Popen("less", stdin = p1.stdout, shell = True)
+		    p1 = Popen("i2cdetect -y 1", stdout = PIPE, shell = True)
+		    p2 = Popen("less", stdin = p1.stdout, shell = True)
+
 
 def main():
     lighter()
     while 1:
         if (stockfish):
-		runStockfish()
-	f = open('timing.csv', 'a')
-        fromSquare = raw_input("Piece moving from square: ")
-        toSquare = raw_input("Piece moving to square: ")
-        move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
-        while move not in board.legal_moves:
-            print "You made an illegal move, please try again."
-            fromSquare = raw_input("Piece moving from square: ")
-            toSquare = raw_input("Piece moving to square: ")
-            move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+            runStockfish()
+        f = open('timing.csv', 'a')
+        move = requestMove()
         startTime = datetime.now()
         board.push(move)
         lighter()
@@ -70,14 +65,15 @@ def main():
         f.write(str(datetime.now() - startTime) + ", ")
         f.close
         print board
-        
-        
+
+
 def runStockfish():
     engine.setposition(moves)
     p = Process(target=bestMove)
     p.start()
     p.join()
-        
+
+
 def bestMove():
     move = engine.bestmove()["move"]
     fromSquare = move[:2]
@@ -90,5 +86,32 @@ def bestMove():
     time.sleep(delay)
     bus.write_byte_data(address, 0, chess.SQUARE_NAMES.index(toSquare))
 
+
+def checkPromotions(fromSquare, toSquare):
+    if (toSquare[1] == '8' and fromSquare[1] == '7') or (toSquare[1] == '1' and fromSquare[1] == '2'):
+        print "cool"
+
+def requestMove():
+    fromSquare = raw_input("Piece moving from square: ")
+    while fromSquare not in chess.SQUARE_NAMES:
+        print "You entered a value that is not a square, please enter another square."
+        fromSquare = raw_input("Piece moving from square")
+    toSquare = raw_input("Piece moving to square: ")
+    while toSquare not in chess.SQUARE_NAMES:
+        print "You entered a value that is not a square, please enter another square."
+        fromSquare = raw_input("Piece moving from square")
+    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+    while move not in board.legal_moves:
+        print "You made an illegal move, please try again."
+        fromSquare = raw_input("Piece moving from square: ")
+        while fromSquare not in chess.SQUARE_NAMES:
+            print "You entered a value that is not a square, please enter another square."
+            fromSquare = raw_input("Piece moving from square")
+        toSquare = raw_input("Piece moving to square: ")
+        while toSquare not in chess.SQUARE_NAMES:
+            print "You entered a value that is not a square, please enter another square."
+            fromSquare = raw_input("Piece moving from square")
+        move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+    return move
 
 main()
