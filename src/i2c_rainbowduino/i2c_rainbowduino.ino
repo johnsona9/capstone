@@ -9,7 +9,6 @@ int oneReceived = 0;
 int twoReceived = 0;
 int suggested1 = -1;
 int suggested2 = -1;
-int counter = 0;
 
 void setup()
 {
@@ -40,7 +39,6 @@ void loop()
 void receiveEvent(int howMany) {
   byte val = 0x00;
   int pos = 0;
-  counter ++;
   while (Wire.available() > 0)
   {
     val = Wire.read();
@@ -84,13 +82,6 @@ void receiveEvent(int howMany) {
       suggested1 = -1;
       suggested2 = -1;
     }
-  }
-
-  if (counter == 134) {
-    for (int x = 0; x < 64; x ++) {
-      Rb.setPixelXY(x % 8, x / 8, colors[x]);
-    }
-    counter = 0;
   }
 
 }
