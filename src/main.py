@@ -1,14 +1,15 @@
 import chess
-import smbus
+# import smbus
 import time
 from pystockfish import *
 from multiprocessing import Process
 from datetime import datetime
 from subprocess import Popen, PIPE
 import sys
+import random
 
 board = chess.Board()
-bus = smbus.SMBus(1)
+# bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
@@ -30,10 +31,11 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
-        if (stockfish):
-            bus.write_byte(address, 3)
-            time.sleep(delay)
-            bus.write_byte(address, 0)
+        # if (stockfish):
+            # time.sleep(delay)
+            # bus.write_byte(address, 3)
+            # time.sleep(delay)
+            # bus.write_byte(address, 0)
         if value < 0:
             data = [0, 64 + pos]
         elif value == 0 and isAttacked:
@@ -45,18 +47,18 @@ def lighter():
         try:
             for i in data:
                 time.sleep(delay)
-                bus.write_byte(address, i)
+                # bus.write_byte(address, i)
         except IOError:
-		    Popen("i2cdetect -y 1>/dev/null", shell=True)
+            Popen("i2cdetect -y 1>/dev/null", shell=True)
 
 
 def main():
     lighter()
-    while 1:
+    while len(board.legal_moves) > 0:
         if (stockfish):
             runStockfish()
         f = open('timing.csv', 'a')
-        move = requestMove()
+        move = getRandomMove()
         startTime = datetime.now()
         board.push(move)
         lighter()
@@ -90,6 +92,7 @@ def checkPromotions(fromSquare, toSquare):
     if (toSquare[1] == '8' and fromSquare[1] == '7') or (toSquare[1] == '1' and fromSquare[1] == '2'):
         print "cool"
 
+
 def requestMove():
     fromSquare = raw_input("Piece moving from square: ")
     while fromSquare not in chess.SQUARE_NAMES:
@@ -99,7 +102,8 @@ def requestMove():
     while toSquare not in chess.SQUARE_NAMES:
         print "You entered a value that is not a square, please enter another square."
         fromSquare = raw_input("Piece moving from square")
-    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare),
+                      chess.SQUARE_NAMES.index(toSquare))
     while move not in board.legal_moves:
         print "You made an illegal move, please try again."
         fromSquare = raw_input("Piece moving from square: ")
@@ -113,4 +117,16 @@ def requestMove():
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
     return move
 
-main()
+
+def getRandomMove():
+    while 1:
+        toSquare = random.choice(chess.SQUARE_NAMES)
+        fromSquare = random.choice(chess.SQUARE_NAMES)
+
+        move = chess.Move(chess.SQUARE_NAMES.index(toSquare), chess.SQUARE_NAMES.index(fromSquare))
+        if move in board.legal_moves:
+            return move
+
+
+# main()
+print getRandomMove().uci()
