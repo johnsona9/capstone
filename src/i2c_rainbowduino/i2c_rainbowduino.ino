@@ -24,6 +24,10 @@ void setup()
 
 void loop()
 {
+  stockFish();
+}
+
+void stockFish() {
   if (suggested1 != -1 && suggested2 != -1) {
     if (millis() % 3000 == 0) {
       Rb.setPixelXY(suggested1 % 8, suggested1 / 8, 0xffffff);
