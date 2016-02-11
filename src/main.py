@@ -101,9 +101,8 @@ def requestMove():
     toSquare = raw_input("Piece moving to square: ")
     while toSquare not in chess.SQUARE_NAMES:
         print "You entered a value that is not a square, please enter another square."
-        fromSquare = raw_input("Piece moving from square")
-    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare),
-                      chess.SQUARE_NAMES.index(toSquare))
+        toSquare = raw_input("Piece moving from square")
+    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
     while move not in board.legal_moves:
         print "You made an illegal move, please try again."
         fromSquare = raw_input("Piece moving from square: ")
@@ -113,7 +112,7 @@ def requestMove():
         toSquare = raw_input("Piece moving to square: ")
         while toSquare not in chess.SQUARE_NAMES:
             print "You entered a value that is not a square, please enter another square."
-            fromSquare = raw_input("Piece moving from square")
+            toSquare = raw_input("Piece moving from square")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
     return move
 
