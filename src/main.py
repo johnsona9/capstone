@@ -1,5 +1,5 @@
 import chess
-# import smbus
+import smbus
 import time
 from pystockfish import *
 from multiprocessing import Process
@@ -9,7 +9,7 @@ import sys
 import random
 
 board = chess.Board()
-# bus = smbus.SMBus(1)
+bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
@@ -31,11 +31,11 @@ def lighter():
         rank = x / 8
         file = x % 8
         pos = rank * 8 + file
-        # if (stockfish):
-            # time.sleep(delay)
-            # bus.write_byte(address, 3)
-            # time.sleep(delay)
-            # bus.write_byte(address, 0)
+        if (stockfish):
+            time.sleep(delay)
+            bus.write_byte(address, 3)
+            time.sleep(delay)
+            bus.write_byte(address, 0)
         if value < 0:
             data = [0, 64 + pos]
         elif value == 0 and isAttacked:
@@ -47,7 +47,7 @@ def lighter():
         try:
             for i in data:
                 time.sleep(delay)
-                # bus.write_byte(address, i)
+                bus.write_byte(address, i)
         except IOError:
             Popen("i2cdetect -y 1>/dev/null", shell=True)
 
@@ -121,7 +121,6 @@ def getRandomMove():
     while 1:
         toSquare = random.choice(chess.SQUARE_NAMES)
         fromSquare = random.choice(chess.SQUARE_NAMES)
-
         move = chess.Move(chess.SQUARE_NAMES.index(toSquare), chess.SQUARE_NAMES.index(fromSquare))
         if move in board.legal_moves:
             return move
