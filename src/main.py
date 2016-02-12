@@ -12,12 +12,12 @@ bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
+lastMove = False
 moves = []
 engine = Engine(depth=10)
 stockfish = False
 if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
     stockfish = True
-lastMove = True
 
 
 def lighter():
@@ -58,24 +58,26 @@ def lighter():
                     time.sleep(delay)
                     bus.write_byte(address, i)
             except IOError:
-    		    Popen("i2cdetect -y 1>/dev/null", shell=True)
+    		    Popen("i2cdetect -y 1 >/dev/null", shell=True)
 
 
 def main():
     lighter()
-    while 1:
+    while not board.is_game_over():
         if (stockfish):
             runStockfish()
         f = open('timing.csv', 'a')
         move = requestMove()
         startTime = datetime.now()
         board.push(move)
-        lastMove = not lastMove
+        global lastMove
+	lastMove = not lastMove
         lighter()
         moves.append(move.uci())
         f.write(str(datetime.now() - startTime) + ", ")
         f.close
         print board
+    lighter()
 
 
 def runStockfish():
@@ -129,11 +131,11 @@ def singleColor(color):
     colors = {"red" : 64, "green": 128, "blue": 192}
     for x in chess.SQUARES:
         data = [0, x + colors[color]]
-        try:
+	try:
             for i in data:
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-		    Popen("i2cdetect -y 1>/dev/null", shell=True)
+		    Popen("i2cdetect -y 1 >/dev/null", shell=True)
 
 main()
