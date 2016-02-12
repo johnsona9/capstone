@@ -6,6 +6,7 @@ from multiprocessing import Process
 from datetime import datetime
 from subprocess import Popen, PIPE
 import sys
+import random
 
 board = chess.Board()
 bus = smbus.SMBus(1)
@@ -31,6 +32,7 @@ def lighter():
         file = x % 8
         pos = rank * 8 + file
         if (stockfish):
+            time.sleep(delay)
             bus.write_byte(address, 3)
             time.sleep(delay)
             bus.write_byte(address, 0)
@@ -47,16 +49,16 @@ def lighter():
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-		    Popen("i2cdetect -y 1>/dev/null", shell=True)
+            Popen("i2cdetect -y 1>/dev/null", shell=True)
 
 
 def main():
     lighter()
-    while 1:
+    while len(board.legal_moves) > 0:
         if (stockfish):
             runStockfish()
         f = open('timing.csv', 'a')
-        move = requestMove()
+        move = getRandomMove()
         startTime = datetime.now()
         board.push(move)
         lighter()
@@ -90,6 +92,7 @@ def checkPromotions(fromSquare, toSquare):
     if (toSquare[1] == '8' and fromSquare[1] == '7') or (toSquare[1] == '1' and fromSquare[1] == '2'):
         print "cool"
 
+
 def requestMove():
     fromSquare = raw_input("Piece moving from square: ")
     while fromSquare not in chess.SQUARE_NAMES:
@@ -112,5 +115,15 @@ def requestMove():
             toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
     return move
+
+
+def getRandomMove():
+    while 1:
+        toSquare = random.choice(chess.SQUARE_NAMES)
+        fromSquare = random.choice(chess.SQUARE_NAMES)
+        move = chess.Move(chess.SQUARE_NAMES.index(toSquare), chess.SQUARE_NAMES.index(fromSquare))
+        if move in board.legal_moves:
+            return move
+
 
 main()
