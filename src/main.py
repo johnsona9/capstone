@@ -124,7 +124,7 @@ def requestMove():
     return move
 
 def promotionQuery():
-    options = ['q', 'r', 'b', 'n']
+    options = {'q': 5, 'r': 4, 'b': 3, 'n': 2}
     print "Promotion options are:"
     print "q : queen"
     print "r : rook"
@@ -139,6 +139,6 @@ def promotionQuery():
         print "b : bishop"
         print "n : knight"
         promotion = raw_input("What piece would you like to promote to?")
-    return promotion
+    return options[promotion]
 
 main()
