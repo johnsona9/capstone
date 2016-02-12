@@ -66,16 +66,12 @@ def main():
     while not board.is_game_over():
         if (stockfish):
             runStockfish()
-        f = open('timing.csv', 'a')
         move = requestMove()
-        startTime = datetime.now()
         board.push(move)
         global lastMove
         lastMove = not lastMove
         lighter()
         moves.append(move.uci())
-        f.write(str(datetime.now() - startTime) + ", ")
-        f.close
         print board
     lighter()
 
