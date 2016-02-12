@@ -49,23 +49,23 @@ def lighter():
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-            Popen("i2cdetect -y 1>/dev/null", shell=True)
+            Popen("i2cdetect -y 1 >/dev/null", shell=True)
 
 
 def main():
     lighter()
-    while len(board.legal_moves) > 0:
-        if (stockfish):
-            runStockfish()
-        f = open('timing.csv', 'a')
-        move = getRandomMove()
-        startTime = datetime.now()
-        board.push(move)
-        lighter()
-        moves.append(move.uci())
-        f.write(str(datetime.now() - startTime) + ", ")
-        f.close
-        print board
+    while 1:
+        while not board.is_game_over():
+            if (stockfish):
+                runStockfish()
+            f = open('timing.csv', 'a')
+            move = getRandomMove()
+            startTime = datetime.now()
+            board.push(move)
+            lighter()
+            moves.append(move.uci())
+            f.write(str(datetime.now() - startTime) + ", ")
+            f.close
 
 
 def runStockfish():
