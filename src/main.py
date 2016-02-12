@@ -71,7 +71,7 @@ def main():
         startTime = datetime.now()
         board.push(move)
         global lastMove
-	lastMove = not lastMove
+        lastMove = not lastMove
         lighter()
         moves.append(move.uci())
         f.write(str(datetime.now() - startTime) + ", ")
@@ -131,11 +131,11 @@ def singleColor(color):
     colors = {"red" : 64, "green": 128, "blue": 192}
     for x in chess.SQUARES:
         data = [0, x + colors[color]]
-	try:
+    	try:
             for i in data:
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-		    Popen("i2cdetect -y 1 >/dev/null", shell=True)
+    	    Popen("i2cdetect -y 1 >/dev/null", shell=True)
 
 main()
