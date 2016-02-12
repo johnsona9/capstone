@@ -17,37 +17,48 @@ engine = Engine(depth=10)
 stockfish = False
 if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
     stockfish = True
+lastMove = True
 
 
 def lighter():
-    for x in chess.SQUARES:
-        isAttacked = False
-        whiteAttacks = len(board.attackers(chess.WHITE, chess.SQUARES[x]))
-        if whiteAttacks > 0:
-            isAttacked = True
-        blackAttacks = len(board.attackers(chess.BLACK, chess.SQUARES[x]))
-        value = whiteAttacks - blackAttacks
-        rank = x / 8
-        file = x % 8
-        pos = rank * 8 + file
-        if (stockfish):
-            bus.write_byte(address, 3)
-            time.sleep(delay)
-            bus.write_byte(address, 0)
-        if value < 0:
-            data = [0, 64 + pos]
-        elif value == 0 and isAttacked:
-            data = [0, 192 + pos]
-        elif value > 0:
-            data = [0, 128 + pos]
-        else:
-            data = [0, pos]
-        try:
-            for i in data:
+    if board.is_game_over():
+        if board.is_checkmate():
+            if lastMove:
+                singleColor("green")
+            else:
+                singleColor("red")
+        elif board.is_stalemate():
+            singleColor("blue")
+
+    else:
+        for x in chess.SQUARES:
+            isAttacked = False
+            whiteAttacks = len(board.attackers(chess.WHITE, chess.SQUARES[x]))
+            if whiteAttacks > 0:
+                isAttacked = True
+            blackAttacks = len(board.attackers(chess.BLACK, chess.SQUARES[x]))
+            value = whiteAttacks - blackAttacks
+            rank = x / 8
+            file = x % 8
+            pos = rank * 8 + file
+            if (stockfish):
+                bus.write_byte(address, 3)
                 time.sleep(delay)
-                bus.write_byte(address, i)
-        except IOError:
-		    Popen("i2cdetect -y 1>/dev/null", shell=True)
+                bus.write_byte(address, 0)
+            if value < 0:
+                data = [0, 64 + pos]
+            elif value == 0 and isAttacked:
+                data = [0, 192 + pos]
+            elif value > 0:
+                data = [0, 128 + pos]
+            else:
+                data = [0, pos]
+            try:
+                for i in data:
+                    time.sleep(delay)
+                    bus.write_byte(address, i)
+            except IOError:
+    		    Popen("i2cdetect -y 1>/dev/null", shell=True)
 
 
 def main():
@@ -59,6 +70,7 @@ def main():
         move = requestMove()
         startTime = datetime.now()
         board.push(move)
+        lastMove = not lastMove
         lighter()
         moves.append(move.uci())
         f.write(str(datetime.now() - startTime) + ", ")
@@ -112,5 +124,16 @@ def requestMove():
             toSquare = raw_input("Piece moving to square: ")
         move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
     return move
+
+def singleColor(color):
+    colors = {"red" : 64, "green": 128, "blue": 192}
+    for x in chess.SQUARES:
+        data = [0, x + colors[color]]
+        try:
+            for i in data:
+                time.sleep(delay)
+                bus.write_byte(address, i)
+        except IOError:
+		    Popen("i2cdetect -y 1>/dev/null", shell=True)
 
 main()
