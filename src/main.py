@@ -87,8 +87,10 @@ def bestMove():
 
 
 def checkPromotions(fromSquare, toSquare):
-    if (toSquare[1] == '8' and fromSquare[1] == '7') or (toSquare[1] == '1' and fromSquare[1] == '2'):
-        print "cool"
+    if (board.piece_at(chess.SQUARE_NAMES.index(fromSquare)) == chess.Piece(chess.PAWN, chess.WHITE) and toSquare[1] == '8') or (board.piece_at(chess.SQUARE_NAMES.index(fromSquare)) == chess.Piece(chess.PAWN, chess.BLACK) and toSquare[1] == '1'):
+        return promotionQuery()
+    else:
+        return 0
 
 def requestMove():
     fromSquare = raw_input("Piece moving from square: ")
@@ -99,7 +101,11 @@ def requestMove():
     while toSquare not in chess.SQUARE_NAMES:
         print "You entered a value that is not a square, please enter another square."
         toSquare = raw_input("Piece moving to square: ")
-    move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+    promotion = checkPromotions(fromSquare, toSquare)
+    if promotion == 0:
+        move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+    else:
+        move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare), promotion)
     while move not in board.legal_moves:
         print "You made an illegal move, please try again."
         fromSquare = raw_input("Piece moving from square: ")
@@ -110,7 +116,29 @@ def requestMove():
         while toSquare not in chess.SQUARE_NAMES:
             print "You entered a value that is not a square, please enter another square."
             toSquare = raw_input("Piece moving to square: ")
-        move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+        promotion = checkPromotions(fromSquare, toSquare)
+        if promotion == 0:
+            move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare))
+        else:
+            move = chess.Move(chess.SQUARE_NAMES.index(fromSquare), chess.SQUARE_NAMES.index(toSquare), promotion)
     return move
+
+def promotionQuery():
+    options = ['q', 'r', 'b', 'n']
+    print "Promotion options are:"
+    print "q : queen"
+    print "r : rook"
+    print "b : bishop"
+    print "n : knight"
+    promotion = raw_input("What piece would you like to promote to?")
+    while promotion not in options:
+        print "You did not enter a legal promotion, please trt again."
+        print "Promotion options are:"
+        print "q : queen"
+        print "r : rook"
+        print "b : bishop"
+        print "n : knight"
+        promotion = raw_input("What piece would you like to promote to?")
+    return promotion
 
 main()
