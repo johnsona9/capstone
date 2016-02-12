@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE
 import sys
 import random
 
+board = chess.Board()
 bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
@@ -53,6 +54,7 @@ def lighter():
 def main():
     lighter()
     while 1:
+        global board
         board = chess.Board()
         while not board.is_game_over():
             if (stockfish):
