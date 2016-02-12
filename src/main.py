@@ -8,12 +8,10 @@ from subprocess import Popen, PIPE
 import sys
 import random
 
-board = chess.Board()
 bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
-moves = []
 engine = Engine(depth=10)
 stockfish = False
 if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
@@ -49,23 +47,23 @@ def lighter():
                 time.sleep(delay)
                 bus.write_byte(address, i)
         except IOError:
-            Popen("i2cdetect -y 1>/dev/null", shell=True)
+            Popen("i2cdetect -y 1 >/dev/null", shell=True)
 
 
 def main():
     lighter()
-    while len(board.legal_moves) > 0:
-        if (stockfish):
-            runStockfish()
-        f = open('timing.csv', 'a')
-        move = getRandomMove()
-        startTime = datetime.now()
-        board.push(move)
-        lighter()
-        moves.append(move.uci())
-        f.write(str(datetime.now() - startTime) + ", ")
-        f.close
-        print board
+    while 1:
+        board = chess.Board()
+        while not board.is_game_over():
+            if (stockfish):
+                runStockfish()
+            f = open('timing.csv', 'a')
+            move = getRandomMove()
+            startTime = datetime.now()
+            board.push(move)
+            lighter()
+            f.write(str(datetime.now() - startTime) + ", ")
+            f.close
 
 
 def runStockfish():
