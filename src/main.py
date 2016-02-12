@@ -8,12 +8,10 @@ from subprocess import Popen, PIPE
 import sys
 import random
 
-board = chess.Board()
 bus = smbus.SMBus(1)
 address = 0x04
 delay = 0.0005
 
-moves = []
 engine = Engine(depth=10)
 stockfish = False
 if (len(sys.argv) > 1 and int(sys.argv[1]) == 1):
@@ -55,6 +53,7 @@ def lighter():
 def main():
     lighter()
     while 1:
+        board = chess.Board()
         while not board.is_game_over():
             if (stockfish):
                 runStockfish()
@@ -63,7 +62,6 @@ def main():
             startTime = datetime.now()
             board.push(move)
             lighter()
-            moves.append(move.uci())
             f.write(str(datetime.now() - startTime) + ", ")
             f.close
 
