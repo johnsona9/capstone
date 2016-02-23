@@ -86,12 +86,9 @@ def main():
             lighter()
             f.write(str(datetime.now() - startTime) + ", ")
             f.close
-<<<<<<< HEAD
             m.close
-=======
             global lastMove
             lastMove = not lastMove
->>>>>>> 59ff6a27f74b8311204aabf5c5c81f52bedd7a85
 
 
 def runStockfish():
