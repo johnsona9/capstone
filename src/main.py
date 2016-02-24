@@ -81,16 +81,13 @@ def main():
         global board
         board = chess.Board()
         while not board.is_game_over():
-            f = open('timing.csv', 'a')
             m = open('move.csv', 'a')
             move = getRandomMove()
             startTime = datetime.now()
             board.push(move)
+            m.close
             m.write(str(datetime.now() - startTime)[6:] + ', ')
             lighter()
-            f.write(str(datetime.now() - startTime)[6:] + ", ")
-            f.close
-            m.close
             global lastMove
             lastMove = not lastMove
 
