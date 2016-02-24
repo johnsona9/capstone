@@ -34,7 +34,7 @@ def lighter():
     else:
         c = open('lighter.csv', 'a')
         ic = open('i2c.csv', 'a')
-        t = datetime.now
+        t = datetime.now()
         for x in chess.SQUARES:
             isAttacked = False
             whiteAttacks = len(board.attackers(chess.WHITE, chess.SQUARES[x]))
@@ -45,8 +45,8 @@ def lighter():
             rank = x / 8
             file = x % 8
             pos = rank * 8 + file
-            mid = datetime.now()
-            c.write(str(mid - t) + ", ")
+            tt = datetime.now()
+            c.write(str(tt - t) + ", ")
             if (stockfish):
                 time.sleep(delay)
                 bus.write_byte(address, 3)
@@ -64,7 +64,7 @@ def lighter():
                 for i in data:
                     time.sleep(delay)
                     bus.write_byte(address, i)
-                    ic.write(str(datetime.now - mid) + ', ')
+                    ic.write(str(datetime.now() - tt) + ', ')
             except IOError:
                 Popen("i2cdetect -y 1 >/dev/null", shell=True)
         c.close
@@ -156,7 +156,7 @@ def requestMove():
 
 def getRandomMove():
     while 1:
-        toSquare = random.choice(chess.SQUARE_NAMES)
+	toSquare = random.choice(chess.SQUARE_NAMES)
         fromSquare = random.choice(chess.SQUARE_NAMES)
         promote = checkPromotions(toSquare, fromSquare)
         if promote == 0:
