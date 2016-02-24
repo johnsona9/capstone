@@ -46,7 +46,7 @@ def lighter():
             file = x % 8
             pos = rank * 8 + file
             tt = datetime.now()
-            c.write(str(tt - t) + ", ")
+            c.write(str(tt - t)[6:] + ", ")
             if (stockfish):
                 time.sleep(delay)
                 bus.write_byte(address, 3)
@@ -64,7 +64,7 @@ def lighter():
                 for i in data:
                     time.sleep(delay)
                     bus.write_byte(address, i)
-                    ic.write(str(datetime.now() - tt) + ', ')
+                    ic.write(str(datetime.now() - tt)[6:] + ', ')
             except IOError:
                 Popen("i2cdetect -y 1 >/dev/null", shell=True)
         c.close
@@ -86,9 +86,9 @@ def main():
             move = getRandomMove()
             startTime = datetime.now()
             board.push(move)
-            m.write(str(datetime.now() - startTime) + ', ')
+            m.write(str(datetime.now() - startTime)[6:] + ', ')
             lighter()
-            f.write(str(datetime.now() - startTime) + ", ")
+            f.write(str(datetime.now() - startTime)[6:] + ", ")
             f.close
             m.close
             global lastMove
