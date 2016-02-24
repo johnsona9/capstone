@@ -62,6 +62,7 @@ def lighter():
                     BUS.write_byte(ADDRESS, i)
             except IOError:
                 Popen("i2cdetect -y 1 >/dev/null", shell=True)
+                lighter()
 
 
 def main():
