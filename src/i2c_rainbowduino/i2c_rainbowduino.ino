@@ -87,5 +87,11 @@ void receiveEvent(int howMany) {
       suggested2 = -1;
     }
   }
+  else if (oneReceived == 1 && val1 == 4) {
+    oneReceived = 0;
+    twoReceived = 0;
+    suggested1 = -1;
+    suggested2 = -1;
+  }
 
 }
