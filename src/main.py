@@ -32,8 +32,8 @@ def lighter():
             singleColor("blue")
 
     else:
-        c = open('lighter.csv', 'a')
-        ic = open('i2c.csv', 'a')
+        c = open('lighter.txt', 'a')
+        ic = open('i2c.txt', 'a')
         t = datetime.now()
         for x in chess.SQUARES:
             isAttacked = False
@@ -81,7 +81,7 @@ def main():
         global board
         board = chess.Board()
         while not board.is_game_over():
-            m = open('move.csv', 'a')
+            m = open('move.txt', 'a')
             move = getRandomMove()
             startTime = datetime.now()
             board.push(move)
